@@ -16,7 +16,7 @@ export const addDocumentDB = async (title, parent) => {
       }),
     });
 
-    res.documents = []; // api문제
+    res.documents = [];
     return res;
   } catch (error) {
     alert(error);
