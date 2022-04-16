@@ -1,26 +1,14 @@
+//event
 import { selectedEvent, addEvent, deleteEvent } from "../events/documentEvent.js";
 
-export default function Banner({ $target, initialState }) {
-  const onCreate = ({ id, title, documents }) => {
-    return `
-      <li data-id = ${id}>
-      <span class = "title">${title}<span>
-      <div>
-        <button class = "addBtn">+</button>
-        <button class = "deleteBtn">-</button>
-      </div>
-        ${
-          documents.length > 0
-            ? `<ul>${documents.map((document) => onCreate(document)).join("")}</ul>`
-            : ""
-        }
-      </li>`;
-  };
+//module
+import { createDocument } from "../module/documentModule.js";
 
+export default function Banner({ $target, initialState }) {
   const render = () => {
     $target.innerHTML = `<ul class = "itemList">${initialState
       .map((document) => {
-        return onCreate(document);
+        return createDocument(document);
       })
       .join("")}</ul>`;
 
