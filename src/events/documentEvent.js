@@ -25,10 +25,10 @@ export const deleteEvent = async ($target, id) => {
   $target.dispatchEvent(event);
 };
 
-export const updateEvent = async ($target, id) => {
-  const event = new CustomEvent("delete", {
+export const updateEvent = async ($target, document) => {
+  const event = new CustomEvent("update", {
     bubbles: true,
-    detail: { id },
+    detail: document,
   });
 
   $target.dispatchEvent(event);

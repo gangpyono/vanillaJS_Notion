@@ -16,10 +16,26 @@ export const addDocumentDB = async (title, parent) => {
       }),
     });
 
-    res.documents = [];
+    res.documents = []; // api문제
     return res;
   } catch (error) {
     alert(error);
+  }
+};
+
+export const updateDocumentDB = async (documentId, { title, content }) => {
+  try {
+    const res = await request(`/documents/${documentId}`, {
+      method: "PUT",
+      body: JSON.stringify({
+        title,
+        content,
+      }),
+    });
+
+    return res;
+  } catch (error) {
+    console.log(error);
   }
 };
 
