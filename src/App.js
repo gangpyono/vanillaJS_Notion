@@ -14,32 +14,39 @@ import {
 //module
 import { addDocument, deleteDocument, updateDocument } from "./module/documentModule.js";
 
+//event
+import { bannerEvent, editorEvent } from "./events/stateEvent.js";
+import { selectedEvent } from "../src/events/documentEvent.js";
+
 export default function App({ $target }) {
   let state = {
     documentList: [],
     documentDetail: {},
   };
 
-  const route = () => {
+  Banner({ $target });
+
+  Editor({ $target });
+
+  window.addEventListener("popstate", () => {
     const { pathname } = location;
 
-    if (pathname.indexOf("/") > -1) {
-      Banner({ $target, initialState: state.documentList });
+    if (pathname === "/") {
+      editorEvent({ $target, documentDetail: null });
+      return;
     }
 
     if (pathname.indexOf("/documentDetail") > -1) {
-      console.log(state.documentDetail);
-      Editor({ $target, initialState: state.documentDetail });
-    } else {
+      const temp = pathname.split("/");
+      const id = temp[temp.length - 1];
+      selectedEvent($target, id);
+      return;
     }
-  };
-
-  window.addEventListener("popstate", () => route());
+  });
 
   const setState = (nextState) => {
     if (state !== nextState) {
       state = nextState;
-      route();
     }
   };
 
@@ -47,10 +54,11 @@ export default function App({ $target }) {
     const id = e.detail.id;
 
     const createdDocument = await addDocumentDB("untitle", id);
-    console.log(createdDocument);
     const nextDocumentList = addDocument(state.documentList, id, createdDocument);
 
     setState({ ...state, documentList: nextDocumentList });
+
+    bannerEvent($target, state.documentList);
   });
 
   $target.addEventListener("delete", async (e) => {
@@ -59,17 +67,24 @@ export default function App({ $target }) {
     await deleteDocumentDB(id);
     const nextDocumentList = deleteDocument(state.documentList, id);
 
-    setState({ ...state, documentList: nextDocumentList });
+    if (+id === state.documentDetail.id) {
+      setState({ ...state, documentList: nextDocumentList, documentDetail: {} });
+      editorEvent($target, null);
+    }
+
+    bannerEvent($target, state.documentList);
   });
 
   $target.addEventListener("update", async (e) => {
     const { id, title, content } = e.detail;
 
     const documentDetail = await updateDocumentDB(id, { title, content });
-    console.log(documentDetail);
     const documentList = updateDocument(state.documentList, documentDetail);
 
     setState({ ...state, documentList, documentDetail });
+
+    editorEvent({ $target, documentDetail: state.documentDetail, isEditing: true });
+    bannerEvent($target, state.documentList);
   });
 
   $target.addEventListener("selected", async (e) => {
@@ -78,12 +93,14 @@ export default function App({ $target }) {
     const nextDocumentDetail = await documentDetailDB(id);
 
     setState({ ...state, documentDetail: nextDocumentDetail });
+
+    editorEvent({ $target, documentDetail: state.documentDetail });
   });
 
   const init = async () => {
     const nextDocumentList = await getDocumentDB();
-
     setState({ ...state, documentList: nextDocumentList });
+    bannerEvent($target, state.documentList);
   };
 
   init();
