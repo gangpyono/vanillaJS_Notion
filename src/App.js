@@ -44,7 +44,7 @@ export default function App({ $target }) {
     if (pathname.indexOf("/documentDetail") > -1) {
       const temp = pathname.split("/");
       const id = temp[temp.length - 1];
-      selectedEvent($target, id);
+      if (document.querySelector(`li[data-id = "${id}"]`)) selectedEvent($target, id);
       return;
     }
   });
