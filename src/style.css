@@ -1,0 +1,130 @@
+/*  */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0px;
+  width: 100%;
+}
+
+ul {
+  margin: 0px;
+  padding: 0px;
+  list-style: none;
+}
+
+input {
+  border: none;
+  outline: none;
+}
+
+textarea {
+  border: none;
+  outline: none;
+}
+
+button {
+  outline: none;
+  border: none;
+  background: none;
+  padding: 0px;
+  cursor: pointer;
+  /* margin: none; */
+}
+
+#app {
+  display: flex;
+  width: 100%;
+}
+
+/* banner */
+
+.bannerContainer {
+  overflow: hidden;
+
+  color: #72716b;
+  background: #f7f6f3;
+  overflow-y: auto;
+
+  height: 100vh;
+  padding: 10px;
+  flex: 1 20%;
+}
+
+/* rootBtn */
+.rootAddBtn {
+  color: #72716b;
+}
+
+/* bannerList */
+.itemInner {
+  display: flex;
+  margin: 0.2em 0em;
+  justify-content: space-between;
+}
+
+.itemInner_left {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.bannerItem .btnGroup {
+  background: #f7f6f3;
+  display: flex;
+}
+
+.bannerItem .btnGroup .btn {
+  border: 1px solid #c7c6c3;
+  border-radius: 4px;
+  padding: 2px 5px;
+}
+
+.banner {
+  display: none;
+}
+
+.banner.active {
+  display: block;
+}
+
+.banner .bannerItem {
+  display: flex;
+  flex-direction: column;
+  padding-left: 0.8em;
+  overflow: hidden;
+}
+
+/* rootBtn */
+
+/* editor */
+.editor {
+  display: flex;
+  flex-direction: column;
+  flex: 1 80%;
+  align-items: center;
+  padding: 100px 70px 10px;
+}
+
+.editor .titleInput {
+  width: 100%;
+  flex-basis: 20%;
+  margin-bottom: 10px;
+
+  font-size: 48px;
+  font-weight: bold;
+}
+
+.editor .contentInput {
+  width: 100%;
+  flex-basis: 80%;
+
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.editor .titleInput::placeholder,
+.editor .contentInput::placeholder {
+  color: #e1e1e0;
+}
