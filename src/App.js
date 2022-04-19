@@ -12,7 +12,12 @@ import {
 } from "./utils/api/documentApi.js";
 
 //module
-import { addDocument, deleteDocument, updateDocument } from "./module/documentModule.js";
+import {
+  addDocument,
+  deleteDocument,
+  updateDocument,
+  toggleDocument,
+} from "./module/documentModule.js";
 
 //event
 import { bannerEvent, editorEvent } from "./events/stateEvent.js";
@@ -67,11 +72,8 @@ export default function App({ $target }) {
     await deleteDocumentDB(id);
     const nextDocumentList = deleteDocument(state.documentList, id);
 
-    if (+id === state.documentDetail.id) {
-      setState({ ...state, documentList: nextDocumentList, documentDetail: {} });
-      editorEvent($target, null);
-    }
-
+    setState({ ...state, documentList: nextDocumentList, documentDetail: {} });
+    editorEvent({ $target, documentDetail: null });
     bannerEvent($target, state.documentList);
   });
 
@@ -95,6 +97,16 @@ export default function App({ $target }) {
     setState({ ...state, documentDetail: nextDocumentDetail });
 
     editorEvent({ $target, documentDetail: state.documentDetail });
+  });
+
+  $target.addEventListener("toggle", async (e) => {
+    const id = e.detail.id;
+
+    const nextDocumentList = toggleDocument(state.documentList, id);
+
+    setState({ ...state, documentList: nextDocumentList });
+
+    bannerEvent($target, state.documentList);
   });
 
   const init = async () => {
