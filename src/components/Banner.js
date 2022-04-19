@@ -1,13 +1,24 @@
+//component
+import RootAddBtn from "./RootAddBtn.js";
+
 //event
-import { selectedEvent, addEvent, deleteEvent } from "../events/documentEvent.js";
+import { selectedEvent, addEvent, deleteEvent, toggleEvent } from "../events/documentEvent.js";
 
 //module
 import { createDocument } from "../module/documentModule.js";
 
 export default function Banner({ $target }) {
+  const $container = document.createElement("div");
+  $container.setAttribute("class", "bannerContainer");
+
   const $ul = document.createElement("ul");
-  $ul.setAttribute("class", "itemList");
-  $target.appendChild($ul);
+  $ul.setAttribute("class", "bannerList");
+
+  $container.appendChild($ul);
+  $target.appendChild($container);
+
+  //root 추가버튼.
+  RootAddBtn({ $target: $container, $eventTarget: $target });
 
   let state = {
     documentList: [],
@@ -19,26 +30,36 @@ export default function Banner({ $target }) {
   };
 
   $ul.addEventListener("click", (e) => {
-    const $li = e.target.closest("li");
+    const target = e.target;
+    const $li = target.closest("li");
     const id = $li.dataset.id;
 
-    const className = e.target.className;
-
-    if (className === "title") {
+    if (target.classList.contains("itemTitle")) {
       history.pushState(null, null, `/documentDetail/${id}`);
       selectedEvent($target, id);
       return;
     }
 
-    if (className === "addBtn") {
+    if (target.classList.contains("addBtn")) {
       addEvent($target, id);
       return;
     }
 
-    if (className === "deleteBtn") {
+    if (target.classList.contains("deleteBtn")) {
+      history.replaceState(null, null, "/");
       deleteEvent($target, id);
       return;
     }
+
+    if (target.classList.contains("toggleBtn")) {
+      const $ul = document.querySelector(`li[data-id="${id}"] > ul`);
+
+      if ($ul === null) return;
+
+      toggleEvent($target, id);
+      return;
+    }
+    return;
   });
 
   const render = () => {
