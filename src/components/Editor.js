@@ -3,6 +3,7 @@ import { updateEvent } from "../events/documentEvent.js";
 
 export default function Editor({ $target }) {
   const $editContainer = document.createElement("div");
+  $editContainer.setAttribute("class", "editor");
   $target.appendChild($editContainer);
 
   let state = {
@@ -33,14 +34,19 @@ export default function Editor({ $target }) {
       };
 
       updateEvent($target, updatedDocument);
-    }, 1000);
+    }, 200);
   });
 
   const render = () => {
     if (!state.init) {
       $editContainer.innerHTML = `
-    <input class = "titleInput" value="${state.documentDetail.title}" autofocus/>
-    <textarea class = "contentInput">${state.documentDetail.content}</textarea>
+    <input class = "titleInput" value="${
+      state.documentDetail.title === "untitle" ? "" : state.documentDetail.title
+    }" placeholder ="untitled." />
+    <textarea contenteditable = "true" class = "contentInput" placeholder ="type content!">${
+      state.documentDetail.content === null ? "" : state.documentDetail.content
+    }</textarea>
+    
     `;
 
       state.init = true;
