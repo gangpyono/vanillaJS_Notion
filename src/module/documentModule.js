@@ -35,21 +35,13 @@ export const addDocument = (initialState, targetId = "", createdDocument) => {
       for (const childDocument of parentDocument) {
         if (childDocument.id === +targetId) {
           childDocument.documents.push(createdDocument);
-
           childDocument.active = true;
-          // if (childDocument.hasOwnProperty("active")) {
-
-          // } else {
-          //   childDocument.active = true;
-          // }
-
           return;
         }
         recur(childDocument.documents);
       }
     }
   };
-
   recur(nextState);
 
   return nextState;
@@ -68,8 +60,7 @@ export const deleteDocument = (initialState, targetId) => {
           const idx = parrentDocument.findIndex((document) => document.id === +targetId);
           parrentDocument.splice(idx, 1);
 
-          if (parrentDocument.length === 0) parrent.active = false;
-
+          if (parrentDocument.length === 0 && parrent) parrent.active = false;
           nextState.push(...temp);
           return;
         }
