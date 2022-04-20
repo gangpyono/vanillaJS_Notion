@@ -24,14 +24,20 @@ import { bannerEvent, editorEvent } from "./events/stateEvent.js";
 import { selectedEvent } from "../src/events/documentEvent.js";
 
 export default function App({ $target }) {
+  Banner({ $target });
+
+  Editor({ $target });
+
   let state = {
     documentList: [],
     documentDetail: {},
   };
 
-  Banner({ $target });
-
-  Editor({ $target });
+  const setState = (nextState) => {
+    if (state !== nextState) {
+      state = nextState;
+    }
+  };
 
   window.addEventListener("popstate", () => {
     const { pathname } = location;
@@ -48,12 +54,6 @@ export default function App({ $target }) {
       return;
     }
   });
-
-  const setState = (nextState) => {
-    if (state !== nextState) {
-      state = nextState;
-    }
-  };
 
   $target.addEventListener("add", async (e) => {
     const id = e.detail.id;
