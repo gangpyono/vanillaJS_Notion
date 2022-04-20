@@ -1,3 +1,4 @@
+//event
 import { addEvent } from "../events/documentEvent.js";
 
 export default function RootAddBtn({ $target, $eventTarget }) {
