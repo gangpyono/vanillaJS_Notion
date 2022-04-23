@@ -2,10 +2,17 @@
 import RootAddBtn from "./RootAddBtn.js";
 
 //event
-import { selectedEvent, addEvent, deleteEvent, toggleEvent } from "../events/documentEvent.js";
+import { selectedEvent, addEvent, deleteEvent } from "../events/documentEvent.js";
 
 //module
 import { createDocument } from "../module/documentModule.js";
+
+//storage
+import {
+  sessionGetItem,
+  sessionSetItem,
+  sessionRemoveItem,
+} from "../utils/storage/sessionStorage.js";
 
 export default function Banner({ $target }) {
   const $container = document.createElement("div");
@@ -41,11 +48,13 @@ export default function Banner({ $target }) {
     }
 
     if (target.classList.contains("addBtn")) {
+      sessionSetItem("toggleList", id);
       addEvent($target, id);
       return;
     }
 
     if (target.classList.contains("deleteBtn")) {
+      sessionRemoveItem("toggleList", id);
       history.replaceState(null, null, "/");
       deleteEvent($target, id);
       return;
@@ -53,19 +62,34 @@ export default function Banner({ $target }) {
 
     if (target.classList.contains("toggleBtn")) {
       const $ul = document.querySelector(`li[data-id="${id}"] > ul`);
+      const $toggleBtn = document.querySelector(
+        `li[data-id="${id}"] > .itemInner > .itemInner_left > .toggleBtn`
+      );
 
       if ($ul === null) return;
 
-      toggleEvent($target, id);
+      if ($ul.classList.contains("active")) {
+        sessionRemoveItem("toggleList", id);
+        $ul.classList.remove("active");
+
+        $toggleBtn.innerText = "▶";
+        return;
+      }
+
+      sessionSetItem("toggleList", id);
+      $ul.classList.add("active");
+      $toggleBtn.innerText = "▼";
       return;
     }
+
     return;
   });
 
   const render = () => {
+    const toggleList = sessionGetItem("toggleList");
     $ul.innerHTML = `${state.documentList
       .map((document) => {
-        return createDocument(document);
+        return createDocument(document, toggleList);
       })
       .join("")}`;
   };

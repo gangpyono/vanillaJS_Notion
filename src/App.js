@@ -12,12 +12,7 @@ import {
 } from "./utils/api/documentApi.js";
 
 //module
-import {
-  addDocument,
-  deleteDocument,
-  updateDocument,
-  toggleDocument,
-} from "./module/documentModule.js";
+import { addDocument, deleteDocument, updateDocument } from "./module/documentModule.js";
 
 //event
 import { bannerEvent, editorEvent } from "./events/stateEvent.js";
@@ -39,6 +34,14 @@ export default function App({ $target }) {
     }
   };
 
+  const route = () => {
+    const { pathname } = location;
+    if (pathname.includes("/documentDetail")) {
+      const [, , id] = pathname.split("/");
+      selectedEvent($target, id);
+    }
+  };
+
   window.addEventListener("popstate", () => {
     const { pathname } = location;
 
@@ -47,7 +50,7 @@ export default function App({ $target }) {
       return;
     }
 
-    if (pathname.indexOf("/documentDetail") > -1) {
+    if (pathname.includes("/documentDetail")) {
       const temp = pathname.split("/");
       const id = temp[temp.length - 1];
       if (document.querySelector(`li[data-id = "${id}"]`)) selectedEvent($target, id);
@@ -99,20 +102,11 @@ export default function App({ $target }) {
     editorEvent({ $target, documentDetail: state.documentDetail });
   });
 
-  $target.addEventListener("toggle", async (e) => {
-    const id = e.detail.id;
-
-    const nextDocumentList = toggleDocument(state.documentList, id);
-
-    setState({ ...state, documentList: nextDocumentList });
-
-    bannerEvent($target, state.documentList);
-  });
-
   const init = async () => {
     const nextDocumentList = await getDocumentDB();
     setState({ ...state, documentList: nextDocumentList });
     bannerEvent($target, state.documentList);
+    route();
   };
 
   init();

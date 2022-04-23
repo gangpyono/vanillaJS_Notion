@@ -29,11 +29,3 @@ export const updateEvent = async ($target, document) => {
 
   $target.dispatchEvent(event);
 };
-
-export const toggleEvent = async ($target, id) => {
-  const event = new CustomEvent("toggle", {
-    detail: { id },
-  });
-
-  $target.dispatchEvent(event);
-};
