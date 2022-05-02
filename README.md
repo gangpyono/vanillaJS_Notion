@@ -9,5 +9,6 @@
 - https://yess.tistory.com/11
 
 추가기능,리펙토링
-- [토글기능,리팩토링](https://yess.tistory.com/12)
+
+- [토글기능,리팩토링(2022.04.23)](https://yess.tistory.com/12)
 - 함수네이밍,세션스토리지 추상화,고차함수 적용
