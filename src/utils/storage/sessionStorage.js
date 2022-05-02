@@ -7,7 +7,7 @@ const sessionStorage = (key) => {
   };
 };
 
-export const addtoggleStateAtSessionStorage = (key, id) => {
+export const addToggleStateAtSessionStorage = (key, id) => {
   const storage = sessionStorage(key);
   const storageValue = storage.get() || {};
   const newStorageValue = { ...storageValue, [id]: true };
