@@ -1,4 +1,4 @@
-import { sessionRemoveItem } from "../utils/storage/sessionStorage.js";
+import { deleteToggleStateAtSessionStorage } from "../utils/storage/sessionStorage.js";
 
 export const createDocument = ({ id, title, documents }, toggleList = {}) => {
   return `
@@ -62,7 +62,8 @@ export const deleteDocument = (initialState, targetId) => {
           const idx = parrentDocument.findIndex((document) => document.id === +targetId);
           parrentDocument.splice(idx, 1);
 
-          if (parrentDocument.length === 0 && parrent) sessionRemoveItem("toggleList", parrent.id);
+          if (parrentDocument.length === 0 && parrent)
+            deleteToggleStateAtSessionStorage("toggleList", parrent.id);
           nextState.push(...temp);
           return;
         }

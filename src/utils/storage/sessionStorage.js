@@ -1,27 +1,34 @@
-const sessionStorage = window.sessionStorage;
+const sessionStorage = (key) => {
+  const sessionStorage = window.sessionStorage;
 
-export const sessionSetItem = (key, value) => {
-  const storageValue = JSON.parse(sessionStorage.getItem(key)) || {};
+  return {
+    get: () => JSON.parse(sessionStorage.getItem(key)),
+    set: (value) => sessionStorage.setItem(key, JSON.stringify(value)),
+  };
+};
 
-  const newStorageValue = { ...storageValue, [value]: true };
+export const addtoggleStateAtSessionStorage = (key, id) => {
+  const storage = sessionStorage(key);
+  const storageValue = storage.get() || {};
+  const newStorageValue = { ...storageValue, [id]: true };
 
-  sessionStorage.setItem(key, JSON.stringify(newStorageValue));
-
+  storage.set(newStorageValue);
   return;
 };
 
-export const sessionGetItem = (key) => {
-  const storageValue = JSON.parse(sessionStorage.getItem(key)) || {};
+export const deleteToggleStateAtSessionStorage = (key, id) => {
+  const storage = sessionStorage(key);
+  const storageValue = storage.get() || {};
+  const newStorageValue = { ...storageValue };
+  delete newStorageValue[id];
+
+  storage.set(newStorageValue);
+  return;
+};
+
+export const getToggleStateAtSessionStorage = (key) => {
+  const storage = sessionStorage(key);
+  const storageValue = storage.get() || {};
 
   return storageValue;
-};
-
-export const sessionRemoveItem = (key, value) => {
-  const storageValue = JSON.parse(sessionStorage.getItem(key));
-  delete storageValue[value];
-
-  const newStorageValue = { ...storageValue };
-  sessionStorage.setItem(key, JSON.stringify(newStorageValue));
-
-  return;
 };

@@ -9,9 +9,9 @@ import { createDocument } from "../module/documentModule.js";
 
 //storage
 import {
-  sessionGetItem,
-  sessionSetItem,
-  sessionRemoveItem,
+  getToggleStateAtSessionStorage,
+  addtoggleStateAtSessionStorage,
+  deleteToggleStateAtSessionStorage,
 } from "../utils/storage/sessionStorage.js";
 
 export default function Banner({ $target }) {
@@ -48,13 +48,13 @@ export default function Banner({ $target }) {
     }
 
     if (target.classList.contains("addBtn")) {
-      sessionSetItem("toggleList", id);
+      addtoggleStateAtSessionStorage("toggleList", id);
       addEvent($target, id);
       return;
     }
 
     if (target.classList.contains("deleteBtn")) {
-      sessionRemoveItem("toggleList", id);
+      deleteToggleStateAtSessionStorage("toggleList", id);
       history.replaceState(null, null, "/");
       deleteEvent($target, id);
       return;
@@ -69,14 +69,14 @@ export default function Banner({ $target }) {
       if ($ul === null) return;
 
       if ($ul.classList.contains("active")) {
-        sessionRemoveItem("toggleList", id);
+        deleteToggleStateAtSessionStorage("toggleList", id);
         $ul.classList.remove("active");
 
         $toggleBtn.innerText = "▶";
         return;
       }
 
-      sessionSetItem("toggleList", id);
+      addtoggleStateAtSessionStorage("toggleList", id);
       $ul.classList.add("active");
       $toggleBtn.innerText = "▼";
       return;
@@ -86,7 +86,7 @@ export default function Banner({ $target }) {
   });
 
   const render = () => {
-    const toggleList = sessionGetItem("toggleList");
+    const toggleList = getToggleStateAtSessionStorage("toggleList");
     $ul.innerHTML = `${state.documentList
       .map((document) => {
         return createDocument(document, toggleList);
