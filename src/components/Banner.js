@@ -2,7 +2,7 @@
 import RootAddBtn from "./RootAddBtn.js";
 
 //event
-import { selectedEvent, addEvent, deleteEvent } from "../events/documentEvent.js";
+import { selectEvent, addEvent, deleteEvent } from "../events/documentEvent.js";
 
 //module
 import { createDocument } from "../module/documentModule.js";
@@ -43,7 +43,7 @@ export default function Banner({ $target }) {
 
     if (target.classList.contains("itemTitle")) {
       history.pushState(null, null, `/documentDetail/${id}`);
-      selectedEvent($target, id);
+      selectEvent($target, id);
       return;
     }
 

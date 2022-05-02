@@ -1,4 +1,4 @@
-export const bannerEvent = ($target, documentList) => {
+export const setStateEventAtBanner = ($target, documentList) => {
   const event = new CustomEvent("banner", {
     detail: { documentList },
   });
@@ -6,7 +6,7 @@ export const bannerEvent = ($target, documentList) => {
   $target.dispatchEvent(event);
 };
 
-export const editorEvent = ({ $target, documentDetail, isEditing = false }) => {
+export const setStateEventAtEditor = ({ $target, documentDetail, isEditing = false }) => {
   const event = new CustomEvent("editor", {
     detail: { documentDetail, isEditing },
   });

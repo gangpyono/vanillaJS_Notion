@@ -4,19 +4,19 @@ import Editor from "./components/Editor.js";
 
 //api
 import {
-  getDocumentDB,
-  documentDetailDB,
-  addDocumentDB,
-  deleteDocumentDB,
-  updateDocumentDB,
+  getDocumentAPI,
+  documentDetailAPI,
+  addDocumentAPI,
+  deleteDocumentAPI,
+  updateDocumentAPI,
 } from "./utils/api/documentApi.js";
 
 //module
 import { addDocument, deleteDocument, updateDocument } from "./module/documentModule.js";
 
 //event
-import { bannerEvent, editorEvent } from "./events/stateEvent.js";
-import { selectedEvent } from "../src/events/documentEvent.js";
+import { setStateEventAtBanner, setStateEventAtEditor } from "./events/stateEvent.js";
+import { selectEvent } from "../src/events/documentEvent.js";
 
 export default function App({ $target }) {
   Banner({ $target });
@@ -38,7 +38,7 @@ export default function App({ $target }) {
     const { pathname } = location;
     if (pathname.includes("/documentDetail")) {
       const [, , id] = pathname.split("/");
-      selectedEvent($target, id);
+      selectEvent($target, id);
     }
   };
 
@@ -46,14 +46,14 @@ export default function App({ $target }) {
     const { pathname } = location;
 
     if (pathname === "/") {
-      editorEvent({ $target, documentDetail: null });
+      setStateEventAtEditor({ $target, documentDetail: null });
       return;
     }
 
     if (pathname.includes("/documentDetail")) {
       const temp = pathname.split("/");
       const id = temp[temp.length - 1];
-      if (document.querySelector(`li[data-id = "${id}"]`)) selectedEvent($target, id);
+      if (document.querySelector(`li[data-id = "${id}"]`)) selectEvent($target, id);
       return;
     }
   });
@@ -61,51 +61,51 @@ export default function App({ $target }) {
   $target.addEventListener("add", async (e) => {
     const id = e.detail.id;
 
-    const createdDocument = await addDocumentDB("untitle", id);
+    const createdDocument = await addDocumentAPI("untitle", id);
     const nextDocumentList = addDocument(state.documentList, id, createdDocument);
 
     setState({ ...state, documentList: nextDocumentList });
 
-    bannerEvent($target, state.documentList);
+    setStateEventAtBanner($target, state.documentList);
   });
 
   $target.addEventListener("delete", async (e) => {
     const id = e.detail.id;
 
-    await deleteDocumentDB(id);
+    await deleteDocumentAPI(id);
     const nextDocumentList = deleteDocument(state.documentList, id);
 
     setState({ ...state, documentList: nextDocumentList, documentDetail: {} });
-    editorEvent({ $target, documentDetail: null });
-    bannerEvent($target, state.documentList);
+    setStateEventAtEditor({ $target, documentDetail: null });
+    setStateEventAtBanner($target, state.documentList);
   });
 
   $target.addEventListener("update", async (e) => {
     const { id, title, content } = e.detail;
 
-    const documentDetail = await updateDocumentDB(id, { title, content });
+    const documentDetail = await updateDocumentAPI(id, { title, content });
     const documentList = updateDocument(state.documentList, documentDetail);
 
     setState({ ...state, documentList, documentDetail });
 
-    editorEvent({ $target, documentDetail: state.documentDetail, isEditing: true });
-    bannerEvent($target, state.documentList);
+    setStateEventAtEditor({ $target, documentDetail: state.documentDetail, isEditing: true });
+    setStateEventAtBanner($target, state.documentList);
   });
 
   $target.addEventListener("selected", async (e) => {
     const id = e.detail.id;
 
-    const nextDocumentDetail = await documentDetailDB(id);
+    const nextDocumentDetail = await documentDetailAPI(id);
 
     setState({ ...state, documentDetail: nextDocumentDetail });
 
-    editorEvent({ $target, documentDetail: state.documentDetail });
+    setStateEventAtEditor({ $target, documentDetail: state.documentDetail });
   });
 
   const init = async () => {
-    const nextDocumentList = await getDocumentDB();
+    const nextDocumentList = await getDocumentAPI();
     setState({ ...state, documentList: nextDocumentList });
-    bannerEvent($target, state.documentList);
+    setStateEventAtBanner($target, state.documentList);
     route();
   };
 

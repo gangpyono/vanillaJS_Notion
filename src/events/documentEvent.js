@@ -1,4 +1,4 @@
-export const selectedEvent = async ($target, id) => {
+export const selectEvent = async ($target, id) => {
   const event = new CustomEvent("selected", {
     detail: { id },
   });

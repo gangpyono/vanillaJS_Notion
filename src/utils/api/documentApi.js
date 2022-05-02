@@ -1,12 +1,12 @@
 import { request } from "./index.js";
 
-export const getDocumentDB = async () => {
+export const getDocumentAPI = async () => {
   const res = await request("/documents");
 
   return res;
 };
 
-export const addDocumentDB = async (title, parent) => {
+export const addDocumentAPI = async (title, parent) => {
   try {
     const res = await request("/documents", {
       method: "POST",
@@ -23,7 +23,7 @@ export const addDocumentDB = async (title, parent) => {
   }
 };
 
-export const updateDocumentDB = async (documentId, { title, content }) => {
+export const updateDocumentAPI = async (documentId, { title, content }) => {
   try {
     const res = await request(`/documents/${documentId}`, {
       method: "PUT",
@@ -39,14 +39,14 @@ export const updateDocumentDB = async (documentId, { title, content }) => {
   }
 };
 
-export const deleteDocumentDB = async (documentId) => {
+export const deleteDocumentAPI = async (documentId) => {
   const res = await request(`/documents/${documentId}`, {
     method: "DELETE",
   });
   return;
 };
 
-export const documentDetailDB = async (id) => {
+export const documentDetailAPI = async (id) => {
   try {
     const res = await request(`/documents/${id}`);
 
