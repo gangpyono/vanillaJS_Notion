@@ -10,7 +10,7 @@ import { createDocument } from "../module/documentModule.js";
 //storage
 import {
   getToggleStateAtSessionStorage,
-  addtoggleStateAtSessionStorage,
+  addToggleStateAtSessionStorage,
   deleteToggleStateAtSessionStorage,
 } from "../utils/storage/sessionStorage.js";
 
@@ -48,7 +48,7 @@ export default function Banner({ $target }) {
     }
 
     if (target.classList.contains("addBtn")) {
-      addtoggleStateAtSessionStorage("toggleList", id);
+      addToggleStateAtSessionStorage("toggleList", id);
       addEvent($target, id);
       return;
     }
@@ -76,7 +76,7 @@ export default function Banner({ $target }) {
         return;
       }
 
-      addtoggleStateAtSessionStorage("toggleList", id);
+      addToggleStateAtSessionStorage("toggleList", id);
       $ul.classList.add("active");
       $toggleBtn.innerText = "▼";
       return;
