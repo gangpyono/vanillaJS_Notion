@@ -1,0 +1,15 @@
+{
+  "name": "vanillajs_notion",
+  "version": "1.1.0",
+  "description": "Notion clone",
+  "main": "index.js",
+  "scripts": {
+    "start": "npx serve -s"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gangpyono/vanillaJS_Notion.git"
+  },
+  "author": "gangpyono",
+  "homepage": "https://github.com/gangpyono/vanillaJS_Notion#readme"
+}
