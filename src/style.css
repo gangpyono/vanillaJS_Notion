@@ -30,26 +30,40 @@ button {
   background: none;
   padding: 0px;
   cursor: pointer;
-  /* margin: none; */
 }
 
 #app {
-  display: flex;
   width: 100%;
 }
 
 /* banner */
-
 .bannerContainer {
+  width: 20%;
+  position: relative;
   overflow: hidden;
+  overflow-y: auto;
 
   color: #72716b;
   background: #f7f6f3;
-  overflow-y: auto;
 
   height: 100vh;
-  padding: 10px;
-  flex: 1 20%;
+  padding: 10px 15px;
+  margin-left: 10px;
+}
+
+/* resizerBar */
+.resizerBar {
+  width: 10px;
+
+  height: 100%;
+  position: absolute;
+  right: 0px;
+  top: 0px;
+}
+
+.resizerBar:hover {
+  cursor: ew-resize;
+  border-right: 3px solid #dddcd9;
 }
 
 /* rootBtn */
@@ -58,6 +72,7 @@ button {
 }
 
 /* bannerList */
+
 .itemInner {
   display: flex;
   margin: 0.2em 0em;
@@ -102,7 +117,6 @@ button {
 .editor {
   display: flex;
   flex-direction: column;
-  flex: 1 80%;
   align-items: center;
   padding: 100px 70px 10px;
 }
