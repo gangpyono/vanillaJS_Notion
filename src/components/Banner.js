@@ -18,10 +18,14 @@ export default function Banner({ $target }) {
   const $container = document.createElement("div");
   $container.setAttribute("class", "bannerContainer");
 
+  const $resizerBar = document.createElement("div");
+  $resizerBar.setAttribute("class", "resizerBar");
+
   const $ul = document.createElement("ul");
   $ul.setAttribute("class", "bannerList");
 
   $container.appendChild($ul);
+  $container.appendChild($resizerBar);
   $target.appendChild($container);
 
   //root 추가버튼.
@@ -85,8 +89,24 @@ export default function Banner({ $target }) {
     return;
   });
 
+  $container.addEventListener("resize", (e) => {});
+
+  // resizer
+  const resizeWith = (e) => {
+    $container.style.width = e.pageX + "px";
+  };
+
+  $resizerBar.addEventListener("mousedown", () => {
+    window.addEventListener("mousemove", resizeWith);
+  });
+
+  $resizerBar.addEventListener("mouseup", () => {
+    window.removeEventListener("mousemove", resizeWith);
+  });
+
   const render = () => {
     const toggleList = getToggleStateAtSessionStorage("toggleList");
+
     $ul.innerHTML = `${state.documentList
       .map((document) => {
         return createDocument(document, toggleList);
