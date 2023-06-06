@@ -1,9 +1,5 @@
 # vanillaJS\_노션 클로닝
 
-배포링크
-
-- 우측 website 참고
-
 회고 링크
 
 - https://yess.tistory.com/11
